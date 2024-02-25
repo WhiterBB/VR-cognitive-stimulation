@@ -6,6 +6,10 @@ using UnityEditor;
 using UltimateXR.Extensions.System.Collections;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using System.Timers;
+using System;
+using Random = UnityEngine.Random;
 
 public class GameController : MonoBehaviour
 {
@@ -47,6 +51,12 @@ public class GameController : MonoBehaviour
     public TextMeshProUGUI _textGoalCoffeeQuantity;
     public TextMeshProUGUI _textGoalMilkQuantity;
     public TextMeshProUGUI _textGoalWineQuantity;
+    public TextMeshProUGUI _textTotalOneDollar;
+    public TextMeshProUGUI _textTotalFiveDollar;
+    public TextMeshProUGUI _textTotalTenDollar;
+    public TextMeshProUGUI _textTotalTwentyDollar;
+    public TextMeshProUGUI _textTotalErrors;
+    public TextMeshProUGUI _textTimer;
     private int _value;
     private int _watermelonQ;
     private int _pineappleQ;
@@ -74,8 +84,25 @@ public class GameController : MonoBehaviour
     public int _totalElements;
     public int _difficultElements;
     public float _setTimebyDifficult;
+    public float _takenTime;
+    private int _totalToPay = 0;
     public GameObject _canvasGoal;
     public GameObject _canvasGrabbed;
+    public GameObject _canvasToPay;
+    public GameObject _canvasResult;
+    public GameObject _laserpoint;
+    public AudioSource _audioPlayer;
+    public int _totalOneDollar = 0;
+    public int _totalFiveDollar = 0;
+    public int _totalTenDollar = 0;
+    public int _totalTwentyDollar = 0;
+    public int _errors = 0;
+    //public int _totalItems;
+    public Image _imageResultProducts;
+    public Image _imageResultPaying;
+    public Sprite _ok;
+    public Sprite _noOk;
+    public TriggerController triggerController;
 
     // Start is called before the first frame update
     void Start()
@@ -83,9 +110,17 @@ public class GameController : MonoBehaviour
         _initialFill();
         _generateFoodbyDifficult();
         _canvasGrabbed.SetActive(false);
+        _canvasToPay.SetActive(false);
+        _canvasResult.SetActive(false);
+        _laserpoint.SetActive(false);
         StartCoroutine(_hideUI(_canvasGoal, _setTimebyDifficult));
         //StartCoroutine(_hideUI(_canvasGrabbed, _setTimebyDifficult, true));
         StartCoroutine(_showUI(_canvasGrabbed, _setTimebyDifficult));
+    }
+
+    void Update()
+    {
+        _takenTime += Time.deltaTime;
     }
 
     public void TargetHit(GameObject obj)
@@ -97,7 +132,7 @@ public class GameController : MonoBehaviour
             _idGrabbedFood.Add(1);
             _pineapple.Remove(obj);
             Debug.Log("Score: " + _value);
-            _textTotalValue.text = "Total: " + _value;
+            _textTotalValue.text = "Total a pagar: " + _value;
             _textPineappleQuantity.text = "x " + _pineappleQ;
 
         }
@@ -108,7 +143,7 @@ public class GameController : MonoBehaviour
             _idGrabbedFood.Add(2);
             _watermelon.Remove(obj);
             Debug.Log("Score: " + _value);
-            _textTotalValue.text = "Total: " + _value;
+            _textTotalValue.text = "Total a pagar: " + _value;
             _textWatermelonQuantity.text = "x " + _watermelonQ;
 
         }
@@ -119,7 +154,7 @@ public class GameController : MonoBehaviour
             _idGrabbedFood.Add(3);
             _mango.Remove(obj);
             Debug.Log("Score: " + _value);
-            _textTotalValue.text = "Total: " + _value;
+            _textTotalValue.text = "Total a pagar: " + _value;
             _textMangoQuantity.text = "x " + _mangoQ;
 
         }
@@ -129,7 +164,7 @@ public class GameController : MonoBehaviour
             _bananaQ += 1;
             _idGrabbedFood.Add(4);
             _banana.Remove(obj);
-            _textTotalValue.text = "Total: " + _value;
+            _textTotalValue.text = "Total a pagar: " + _value;
             _textBananaQuantity.text = "x " + _bananaQ;
 
         }
@@ -139,7 +174,7 @@ public class GameController : MonoBehaviour
             _pearQ += 1;
             _idGrabbedFood.Add(5);
             _pear.Remove(obj);
-            _textTotalValue.text = "Total: " + _value;
+            _textTotalValue.text = "Total a pagar: " + _value;
             _textPearQuantity.text = "x " + _pearQ;
 
         }
@@ -149,7 +184,7 @@ public class GameController : MonoBehaviour
             _appleQ += 1;
             _idGrabbedFood.Add(6);
             _apple.Remove(obj);
-            _textTotalValue.text = "Total: " + _value;
+            _textTotalValue.text = "Total a pagar: " + _value;
             _textAppleQuantity.text = "x " + _appleQ;
 
         }
@@ -159,7 +194,7 @@ public class GameController : MonoBehaviour
             _orangeJuiceQ += 1;
             _idGrabbedFood.Add(7);
             _orangeJuice.Remove(obj);
-            _textTotalValue.text = "Total: " + _value;
+            _textTotalValue.text = "Total a pagar: " + _value;
             _textOrangeJuiceQuantity.text = "x " + _orangeJuiceQ;
 
         }
@@ -169,7 +204,7 @@ public class GameController : MonoBehaviour
             _chocolateQ += 1;
             _idGrabbedFood.Add(8);
             _chocolate.Remove(obj);
-            _textTotalValue.text = "Total: " + _value;
+            _textTotalValue.text = "Total a pagar: " + _value;
             _textChocolateQuantity.text = "x " + _chocolateQ;
 
         }
@@ -179,7 +214,7 @@ public class GameController : MonoBehaviour
             _coffeeQ += 1;
             _idGrabbedFood.Add(9);
             _coffee.Remove(obj);
-            _textTotalValue.text = "Total: " + _value;
+            _textTotalValue.text = "Total a pagar: " + _value;
             _textCoffeeQuantity.text = "x " + _coffeeQ;
 
         }
@@ -189,7 +224,7 @@ public class GameController : MonoBehaviour
             _milkQ += 1;
             _idGrabbedFood.Add(10);
             _milk.Remove(obj);
-            _textTotalValue.text = "Total: " + _value;
+            _textTotalValue.text = "Total a pagar: " + _value;
             _textMilkQuantity.text = "x " + _milkQ;
 
         }
@@ -199,7 +234,7 @@ public class GameController : MonoBehaviour
             _wineQ += 1;
             _idGrabbedFood.Add(11);
             _wine.Remove(obj);
-            _textTotalValue.text = "Total: " + _value;
+            _textTotalValue.text = "Total a pagar: " + _value;
             _textWineQuantity.text = "x " + _wineQ;
 
         }
@@ -250,8 +285,16 @@ public class GameController : MonoBehaviour
         _textGoalCoffeeQuantity = GameObject.Find("GoalCoffeeText").GetComponent<TextMeshProUGUI>();
         _textGoalMilkQuantity = GameObject.Find("GoalMilkText").GetComponent<TextMeshProUGUI>();
         _textGoalWineQuantity = GameObject.Find("GoalWineText").GetComponent<TextMeshProUGUI>();
+        _textTotalOneDollar = GameObject.Find("$1Total").GetComponent<TextMeshProUGUI>();
+        _textTotalFiveDollar = GameObject.Find("$5Total").GetComponent<TextMeshProUGUI>();
+        _textTotalTenDollar = GameObject.Find("$10Total").GetComponent<TextMeshProUGUI>();
+        _textTotalTwentyDollar = GameObject.Find("$20Total").GetComponent<TextMeshProUGUI>();
+        _textTotalErrors = GameObject.Find("TextErrors").GetComponent<TextMeshProUGUI>();
+        _textTimer = GameObject.Find("TextTimer").GetComponent<TextMeshProUGUI>();
         _canvasGoal = GameObject.Find("CanvasGoalFood");
         _canvasGrabbed = GameObject.Find("CanvasGrabbedFood");
+        _canvasToPay = GameObject.Find("CanvasToPay");
+        _canvasResult = GameObject.Find("CanvasResult");
         _pineapple = new List<GameObject>(GameObject.FindGameObjectsWithTag("Pineapple"));
         _watermelon = new List<GameObject>(GameObject.FindGameObjectsWithTag("Watermelon"));
         _mango = new List<GameObject>(GameObject.FindGameObjectsWithTag("Mango"));
@@ -264,6 +307,11 @@ public class GameController : MonoBehaviour
         _milk = new List<GameObject>(GameObject.FindGameObjectsWithTag("Milk"));
         _wine = new List<GameObject>(GameObject.FindGameObjectsWithTag("Wine"));
         _difficultID = StateNameController._difficulty;
+        _laserpoint = GameObject.Find("StandardLaserPointerRight");
+        //_imageResultProducts = GameObject.Find("ImageProducts").gameObject.GetComponent<Image>();
+        //_imageResultPaying = GameObject.Find("ImagePaying").gameObject.GetComponent<Image>();
+        //_ok = Resources.Load<Sprite>("ok");
+        //_noOk = Resources.Load<Sprite>("nook");
     }
 
     public void _generateFoodbyDifficult()
@@ -358,7 +406,7 @@ public class GameController : MonoBehaviour
     {
         yield return new WaitForSeconds(secondsToWait);
         guiParentCanvas.SetActive(show);
-        
+
     }
     IEnumerator _showUI(GameObject guiParentCanvas, float secondsToWait)
     {
@@ -366,7 +414,8 @@ public class GameController : MonoBehaviour
         guiParentCanvas.SetActive(true);
         _enableCanvas();
     }
-    public void _enableCanvas(){
+    public void _enableCanvas()
+    {
         _textWatermelonQuantity = GameObject.Find("WatermelonText").GetComponent<TextMeshProUGUI>();
         _textPineappleQuantity = GameObject.Find("PineappleText").GetComponent<TextMeshProUGUI>();
         _textMangoQuantity = GameObject.Find("MangoText").GetComponent<TextMeshProUGUI>();
@@ -380,5 +429,154 @@ public class GameController : MonoBehaviour
         _textWineQuantity = GameObject.Find("WineText").GetComponent<TextMeshProUGUI>();
     }
 
-    
+    bool _validateResult()
+    {
+        if (_totalToPay == _value)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
+    public void _setTimer()
+    {
+        float _timeToText = _takenTime;
+        int minutes = Mathf.FloorToInt(_timeToText / 60);
+        int seconds = Mathf.FloorToInt(_timeToText % 60);
+        _textTimer.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+
+    public void _openResultCanva()
+    {
+        _canvasToPay.SetActive(false);
+        _canvasResult.SetActive(true);
+
+        if (_validateResult() == true)
+        {
+            _imageResultPaying.sprite = _ok;
+        }
+        else
+        {
+            _imageResultPaying.sprite = _noOk;
+        }
+
+        // _textTotalErrors.text = _errors.ToString();
+        _totalErrors(_generatedFood, _idGrabbedFood);
+    }
+
+    public void _toPay(int _buttonID)
+    {
+        if (_buttonID == 0)
+        {
+            _totalToPay += 1;
+            _totalOneDollar += 1;
+            _textTotalOneDollar.text = _totalOneDollar.ToString();
+        }
+        else if (_buttonID == 1)
+        {
+            _totalToPay -= 1;
+            _totalOneDollar -= 1;
+            _textTotalOneDollar.text = _totalOneDollar.ToString();
+        }
+        else if (_buttonID == 2)
+        {
+            _totalToPay += 5;
+            _totalFiveDollar += 1;
+            _textTotalFiveDollar.text = _totalFiveDollar.ToString();
+        }
+        else if (_buttonID == 3)
+        {
+            _totalToPay -= 5;
+            _totalFiveDollar -= 1;
+            _textTotalFiveDollar.text = _totalFiveDollar.ToString();
+        }
+        else if (_buttonID == 4)
+        {
+            _totalToPay += 10;
+            _totalTenDollar += 1;
+            _textTotalTenDollar.text = _totalTenDollar.ToString();
+        }
+        else if (_buttonID == 5)
+        {
+            _totalToPay -= 10;
+            _totalTenDollar -= 1;
+            _textTotalTenDollar.text = _totalTenDollar.ToString();
+        }
+        else if (_buttonID == 6)
+        {
+            _totalToPay += 20;
+            _totalTwentyDollar += 1;
+            _textTotalTwentyDollar.text = _totalTwentyDollar.ToString();
+        }
+        else if (_buttonID == 7)
+        {
+            _totalToPay -= 20;
+            _totalTwentyDollar -= 1;
+            _textTotalTwentyDollar.text = _totalTwentyDollar.ToString();
+        }
+    }
+
+    public void _totalErrors(List<int> A, List<int> B)
+    {
+        List<int> ASort = A.ToList();
+        ASort.Sort();
+        List<int> BSort = B.ToList();
+        BSort.Sort();
+
+        if (ASort.Count > BSort.Count || ASort.Count == BSort.Count)
+        {
+            print("List A is bigger than List B or they have the same count");
+            for (int i = 0; i < ASort.Count; i++)
+            {
+                int j = BSort.IndexOf(ASort[i]);
+
+                if (j != -1)
+                {
+                    ASort.RemoveAt(i);
+                    BSort.RemoveAt(j);
+
+                    i--;
+                }
+            }
+
+            print("Total List A: " + ASort.Count);
+            print("Total List B: " + BSort.Count);
+
+            _errors = ASort.Count + BSort.Count;
+            print("Errors: " + _errors);
+            _textTotalErrors.text = _errors.ToString();
+        }
+        else
+        {
+            print("List B is bigger than List A");
+            for (int i = 0; i < BSort.Count; i++)
+            {
+                int j = ASort.IndexOf(BSort[i]);
+
+                if (j != -1)
+                {
+                    ASort.RemoveAt(i);
+                    BSort.RemoveAt(j);
+
+                    i--;
+                }
+            }
+
+            print("Total List A: " + ASort.Count);
+            print("Total List B: " + BSort.Count);
+
+            _errors = ASort.Count + BSort.Count;
+            print("Errors: " + _errors);
+            _textTotalErrors.text = _errors.ToString();
+        }
+    }
+    public void _goToMainMenu()
+    {
+        SceneManager.LoadScene("MainScene");
+    }
 }
+

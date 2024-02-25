@@ -27,6 +27,9 @@ public class CartController : MonoBehaviour
             
             //_getID(obj.gameObject);
             gameController.printID();
+            gameController._audioPlayer.Play();
+            obj.gameObject.SetActive(false);
+            print("Object was deleted from scene.");
             
         }
 
