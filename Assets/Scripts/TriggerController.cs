@@ -18,21 +18,21 @@ public class TriggerController : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
 
-        //print("Enter OnTrigger Method");
-        if (other.tag == "Player")
-        {
-            //print("if detected");
-            goalList = gameController._generatedFood;
-            //print("goal list detected");
-            getList = gameController._idGrabbedFood;
-            //print("getCurrentList detected");
-            print(_isSame(goalList, getList));
+        // print("Enter OnTrigger Method");
+        // if (other.tag == "Player")
+        // {
+        //     print("if detected");
+        //     goalList = gameController._generatedFood;
+        //     print("goal list detected");
+        //     getList = gameController._idGrabbedFood;
+        //     print("getCurrentList detected");
+        //     print(_isSame(goalList, getList));
             
-            print("To activate laserpoint");
-            gameController._canvasToPay.SetActive(true);
-            _activateLaserPoint();
-            print("Laser point was activated.");
-        }
+        //     print("To activate laserpoint");
+        //     gameController._canvasToPay.SetActive(true);
+        //     _activateLaserPoint();
+        //     print("Laser point was activated.");
+        // }
     }
 
     bool _isSame(List<int> A, List<int> B)
