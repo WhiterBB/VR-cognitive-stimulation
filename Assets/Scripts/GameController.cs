@@ -90,6 +90,7 @@ public class GameController : MonoBehaviour
     public GameObject _canvasGrabbed;
     public GameObject _canvasToPay;
     public GameObject _canvasResult;
+    public GameObject _canvasToFinish;
     public GameObject _laserpoint;
     public AudioSource _audioPlayer;
     public int _totalOneDollar = 0;
@@ -295,6 +296,7 @@ public class GameController : MonoBehaviour
         _canvasGrabbed = GameObject.Find("CanvasGrabbedFood");
         _canvasToPay = GameObject.Find("CanvasToPay");
         _canvasResult = GameObject.Find("CanvasResult");
+        _canvasToFinish = GameObject.Find("CanvasToFinish");
         _pineapple = new List<GameObject>(GameObject.FindGameObjectsWithTag("Pineapple"));
         _watermelon = new List<GameObject>(GameObject.FindGameObjectsWithTag("Watermelon"));
         _mango = new List<GameObject>(GameObject.FindGameObjectsWithTag("Mango"));
@@ -466,6 +468,50 @@ public class GameController : MonoBehaviour
 
         // _textTotalErrors.text = _errors.ToString();
         _totalErrors(_generatedFood, _idGrabbedFood);
+    }
+
+    bool _isSame(List<int> A, List<int> B)
+    {
+        if (A.Count != B.Count)
+        {
+            return false;
+        }
+        List<int> ASort = A.ToList();
+        ASort.Sort();
+        List<int> BSort = B.ToList();
+        BSort.Sort();
+
+        for (int i = 0; i < ASort.Count; i++)
+        {
+            if (ASort[i] != BSort[i])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void _validateResultProducts(){
+        if(_isSame(_generatedFood, _idGrabbedFood) == true){
+            print("To validate products");
+            _imageResultProducts.sprite = _ok;
+            print("Products were validated.");
+        }else{
+            print("To validate products");
+            _imageResultProducts.sprite = _noOk;
+            print("Products were validated.");
+        }
+    }
+
+    public void _initiatePayProcess()
+    {
+        _canvasToPay.SetActive(true);
+        _activateLaserPoint();
+        _canvasToFinish.SetActive(false);
+    }
+    void _activateLaserPoint()
+    {
+        _laserpoint.SetActive(true);
     }
 
     public void _toPay(int _buttonID)
