@@ -18,21 +18,6 @@ public class TriggerController : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
 
-        // print("Enter OnTrigger Method");
-        // if (other.tag == "Player")
-        // {
-        //     print("if detected");
-        //     goalList = gameController._generatedFood;
-        //     print("goal list detected");
-        //     getList = gameController._idGrabbedFood;
-        //     print("getCurrentList detected");
-        //     print(_isSame(goalList, getList));
-            
-        //     print("To activate laserpoint");
-        //     gameController._canvasToPay.SetActive(true);
-        //     _activateLaserPoint();
-        //     print("Laser point was activated.");
-        // }
     }
 
     bool _isSame(List<int> A, List<int> B)
@@ -56,20 +41,6 @@ public class TriggerController : MonoBehaviour
         return true;
     }
 
-    // private GameObject FindChildGameObjectByName(GameObject topParentGameObject, string gameObjectName)
-    // {
-    //     for (int i = 0; i < topParentGameObject.transform.childCount; i++)
-    //     {
-    //         if (topParentGameObject.transform.GetChild(i).name == gameObjectName)
-    //         {
-    //             return topParentGameObject.transform.GetChild(i).gameObject;
-    //         }
-
-    //         GameObject tmp = FindChildGameObjectByName(topParentGameObject.transform.GetChild(i).gameObject, gameObjectName);
-    //     }
-
-    //     return null;
-    // }
     void _activateLaserPoint()
     {
         gameController._laserpoint.SetActive(true);
