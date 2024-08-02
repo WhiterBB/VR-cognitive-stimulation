@@ -25,7 +25,6 @@ public class CartController : MonoBehaviour
             gameController.TargetHit(obj.gameObject);
             _grabbedFood.Add(obj.gameObject);
             
-            //_getID(obj.gameObject);
             gameController.printID();
             gameController._audioPlayer.Play();
             obj.gameObject.SetActive(false);
@@ -35,23 +34,5 @@ public class CartController : MonoBehaviour
 
 
     }
-    // void _getID(GameObject obj)
-    // {
-    //     if (obj.gameObject.tag == "Pineapple")
-    //     {
-    //         _nextID = obj.gameObject.GetComponent<setID>()._getID();
-    //         _idGrabbedFood.Add(_nextID);
 
-    //     }
-    //     else if (obj.gameObject.tag == "Watermelon")
-    //     {
-    //         _nextID = obj.gameObject.GetComponent<setID>()._getID();
-    //         _idGrabbedFood.Add(_nextID);
-    //     }
-    //     else if (obj.gameObject.tag == "Mango")
-    //     {
-    //         _nextID = obj.gameObject.GetComponent<setID>()._getID();
-    //         _idGrabbedFood.Add(_nextID);
-    //     }
-    // }
 }
