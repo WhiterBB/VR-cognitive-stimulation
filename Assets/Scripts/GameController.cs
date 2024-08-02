@@ -98,7 +98,6 @@ public class GameController : MonoBehaviour
     public int _totalTenDollar = 0;
     public int _totalTwentyDollar = 0;
     public int _errors = 0;
-    //public int _totalItems;
     public Image _imageResultProducts;
     public Image _imageResultPaying;
     public Sprite _ok;
@@ -115,7 +114,6 @@ public class GameController : MonoBehaviour
         _canvasResult.SetActive(false);
         _laserpoint.SetActive(false);
         StartCoroutine(_hideUI(_canvasGoal, _setTimebyDifficult));
-        //StartCoroutine(_hideUI(_canvasGrabbed, _setTimebyDifficult, true));
         StartCoroutine(_showUI(_canvasGrabbed, _setTimebyDifficult));
     }
 
@@ -264,17 +262,6 @@ public class GameController : MonoBehaviour
         _milkQ = 0;
         _wineQ = 0;
         _textTotalValue = GameObject.Find("TotalValue").GetComponent<TextMeshProUGUI>();
-        // _textWatermelonQuantity = GameObject.Find("WatermelonText").GetComponent<TextMeshProUGUI>();
-        // _textPineappleQuantity = GameObject.Find("PineappleText").GetComponent<TextMeshProUGUI>();
-        // _textMangoQuantity = GameObject.Find("MangoText").GetComponent<TextMeshProUGUI>();
-        // _textBananaQuantity = GameObject.Find("BananaText").GetComponent<TextMeshProUGUI>();
-        // _textPearQuantity = GameObject.Find("PearText").GetComponent<TextMeshProUGUI>();
-        // _textAppleQuantity = GameObject.Find("AppleText").GetComponent<TextMeshProUGUI>();
-        // _textOrangeJuiceQuantity = GameObject.Find("OrangeJuiceText").GetComponent<TextMeshProUGUI>();
-        // _textChocolateQuantity = GameObject.Find("ChocolateText").GetComponent<TextMeshProUGUI>();
-        // _textCoffeeQuantity = GameObject.Find("CoffeeText").GetComponent<TextMeshProUGUI>();
-        // _textMilkQuantity = GameObject.Find("MilkText").GetComponent<TextMeshProUGUI>();
-        // _textWineQuantity = GameObject.Find("WineText").GetComponent<TextMeshProUGUI>();
         _textGoalWatermelonQuantity = GameObject.Find("GoalWatermelonText").GetComponent<TextMeshProUGUI>();
         _textGoalPineappleQuantity = GameObject.Find("GoalPineappleText").GetComponent<TextMeshProUGUI>();
         _textGoalMangoQuantity = GameObject.Find("GoalMangoText").GetComponent<TextMeshProUGUI>();
@@ -310,10 +297,6 @@ public class GameController : MonoBehaviour
         _wine = new List<GameObject>(GameObject.FindGameObjectsWithTag("Wine"));
         _difficultID = StateNameController._difficulty;
         _laserpoint = GameObject.Find("StandardLaserPointerRight");
-        //_imageResultProducts = GameObject.Find("ImageProducts").gameObject.GetComponent<Image>();
-        //_imageResultPaying = GameObject.Find("ImagePaying").gameObject.GetComponent<Image>();
-        //_ok = Resources.Load<Sprite>("ok");
-        //_noOk = Resources.Load<Sprite>("nook");
     }
 
     public void _generateFoodbyDifficult()
@@ -466,7 +449,6 @@ public class GameController : MonoBehaviour
             _imageResultPaying.sprite = _noOk;
         }
 
-        // _textTotalErrors.text = _errors.ToString();
         _totalErrors(_generatedFood, _idGrabbedFood);
     }
 
